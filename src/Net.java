@@ -25,6 +25,6 @@ public class Net implements INet {
 
     @Override
     public void run() {
-        
+
     }
 }
