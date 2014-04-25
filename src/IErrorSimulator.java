@@ -2,10 +2,11 @@ public interface IErrorSimulator {
 
     public boolean shouldDrop(Message message, long numberOfTick);
 
-    public boolean shouldDrop(Message message, long numberOfTick, NodeId receiver);
+    public boolean shouldDrop(Message message, long numberOfTick, int receiver);
 
-    public void isolateNode(NodeId nodeId);
+    public void isolateNode(int nodeId);
+    public boolean isIsolatedNode(int nodeId);
 
-    public void reconnectNode(NodeId nodeId);
+    public void reconnectNode(int nodeId);
 
 }
