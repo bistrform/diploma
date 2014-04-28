@@ -41,7 +41,7 @@ public class Logger {
     public void printWorldReport() {
         System.out.format("\n\n========= WORLD REPORT==========\n\n" +
                 "Tick #%d\n Total nodes: %d\n Nodes isolated: %d\n Total messages sent: %d\n Total messages processed: %d\n" +
-                "============================\n\n",
+                "================================\n\n",
                 tick, nodes.size(), isolatedNodes.size(), sentMessages.size(), processedNumberOfMessages);
     }
 
