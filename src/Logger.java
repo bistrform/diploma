@@ -1,5 +1,4 @@
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 public class Logger {
@@ -8,17 +7,17 @@ public class Logger {
     private int processedNumberOfMessages;
     private List<Message> sentMessages;
     private List<Integer> isolatedNodes;
-    private List<Node> nodes;
+    private List<DataNode> nodes;
 
     public Logger() {
         tick = 0;
         processedNumberOfMessages = 0;
         sentMessages = new ArrayList<Message>();
         isolatedNodes = new ArrayList<Integer>();
-        nodes = new ArrayList<Node>();
+        nodes = new ArrayList<DataNode>();
     }
 
-    public void nodeCreated(Node node) {
+    public void nodeCreated(DataNode node) {
         nodes.add(node);
     }
 

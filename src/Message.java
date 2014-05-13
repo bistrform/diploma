@@ -5,26 +5,26 @@ import java.util.List;
 public class Message {
 
     private final MessageData messageData;
-    private final int sender;
-    private final List<Integer> receivers;
+    private final String sender;
+    private final List<String> receivers;
 
-    public Message(Integer sender, List<Integer> receivers, MessageData messageData) {
+    public Message(String sender, List<String> receivers, MessageData messageData) {
         this.sender = sender;
         this.receivers = receivers;
         this.messageData = messageData;
     }
 
-    public Message(Integer sender, Integer receiver, MessageData messageData) {
+    public Message(String sender, String receiver, MessageData messageData) {
         this.sender = sender;
-        this.receivers = new ArrayList<Integer>(Arrays.asList(receiver));
+        this.receivers = new ArrayList<String>(Arrays.asList(receiver));
         this.messageData = messageData;
     }
 
-    public int getSender() {
+    public String getSender() {
         return this.sender;
     }
 
-    public List<Integer> getReceiverIds() {
+    public List<String> getReceiverIds() {
         return this.receivers;
     }
 
