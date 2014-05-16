@@ -1,7 +1,7 @@
 import java.util.*;
 
 
-public class Net implements INet {
+public class Net implements INet, IObservable {
 
     private Logger logger;
     private Map<String, Queue<Message>> messageQueues;
@@ -76,6 +76,22 @@ public class Net implements INet {
     private INode getNodeByIndex(int index) {
         List<INode> nodes = new ArrayList<INode>(registeredNodes.values());
         return nodes.get(index);
+    }
+
+    @Override
+    public String getStatus() {
+        StringBuilder netStatus = new StringBuilder();
+        netStatus.append("Net status");
+        netStatus.append(System.getProperty("line.separator"));
+        netStatus.append("Tick " + tickNumber);
+        netStatus.append(System.getProperty("line.separator"));
+        netStatus.append("Registered nodes: " + registeredNodes.toString());
+        netStatus.append(System.getProperty("line.separator"));
+        for (String id : messageQueues.keySet()) {
+            netStatus.append("Queue for node " + id + " " + messageQueues.get(id).toString());
+        }
+
+        return netStatus.toString();
     }
 
 }

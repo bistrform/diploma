@@ -1,6 +1,6 @@
 import java.util.*;
 
-public class DataNode implements INode {
+public class DataNode implements INode, IObservable {
 
     private String nodeId;
     private List<String> otherNodes;
@@ -34,6 +34,16 @@ public class DataNode implements INode {
         List<Message> responses = new ArrayList<Message>();
 
         return responses;
+    }
+
+    @Override
+    public String getStatus() {
+        StringBuilder nodeStatus = new StringBuilder();
+        nodeStatus.append("Data node: " + nodeId);
+        nodeStatus.append(System.getProperty("line.separator"));
+        nodeStatus.append(data.toString());
+        nodeStatus.append(System.getProperty("line.separator"));
+        return nodeStatus.toString();
     }
 
 }

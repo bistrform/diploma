@@ -2,7 +2,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-public class ControlNode implements INode {
+public class ControlNode implements INode, IObservable {
 
     private String nodeId;
     private List<String> otherNodes;
@@ -57,4 +57,13 @@ public class ControlNode implements INode {
         }
         return responses;
     }
+
+    @Override
+    public String getStatus() {
+        StringBuilder nodeStatus = new StringBuilder();
+        nodeStatus.append("Control node: " + nodeId);
+        nodeStatus.append(System.getProperty("line.separator"));
+        return nodeStatus.toString();
+    }
+
 }
