@@ -22,7 +22,7 @@ public class Net implements INet, IObservable {
     //temporary helper methods
     public void createDataNode() {
         String id = UUID.randomUUID().toString();
-        INode dataNode = new DataNode(id);
+        INode dataNode = new Node(id);
         registerNode(id, dataNode);
     }
 

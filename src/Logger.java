@@ -7,17 +7,17 @@ public class Logger {
     private int processedNumberOfMessages;
     private List<Message> sentMessages;
     private List<Integer> isolatedNodes;
-    private List<DataNode> nodes;
+    private List<Node> nodes;
 
     public Logger() {
         tick = 0;
         processedNumberOfMessages = 0;
         sentMessages = new ArrayList<Message>();
         isolatedNodes = new ArrayList<Integer>();
-        nodes = new ArrayList<DataNode>();
+        nodes = new ArrayList<Node>();
     }
 
-    public void nodeCreated(DataNode node) {
+    public void nodeCreated(Node node) {
         nodes.add(node);
     }
 

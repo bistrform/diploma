@@ -1,8 +1,9 @@
 import java.util.*;
 
-public class DataNode implements INode, IObservable {
+public class Node implements INode, IObservable {
 
     private String nodeId;
+    private ISocket socket;
     private List<String> otherNodes;
     private Map<String, String> data;
 
@@ -10,8 +11,9 @@ public class DataNode implements INode, IObservable {
         return nodeId;
     }
 
-    public DataNode(String nodeId) {
+    public Node(String nodeId) {
         this.nodeId = nodeId;
+        socket = new Socket();
         otherNodes = new ArrayList<String>();
         data = new HashMap<String, String>();
     }
@@ -25,15 +27,13 @@ public class DataNode implements INode, IObservable {
 
     @Override
     public void setSocket(ISocket socket) {
-        //To change body of implemented methods use File | Settings | File Templates.
+        this.socket = socket;
     }
 
     @Override
-    public List<Message> process(Message message) {
+    public void process(Message message) {
         System.out.format("Node with id %s is processing\n", nodeId);
-        List<Message> responses = new ArrayList<Message>();
-
-        return responses;
+        //response messages are pushed to the socket
     }
 
     @Override
