@@ -1,7 +1,9 @@
+import java.util.List;
+
 public interface ISocket {
 
     public void acceptMessage(Message message);
 
-    public Message getMessage();
+    public List<Message> getAllMessages();
 
 }

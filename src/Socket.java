@@ -1,14 +1,14 @@
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Queue;
 
 public class Socket implements ISocket {
 
-    private Queue<Message> messageQueue;
+    private List<Message> messageQueue;
 
     public Socket() {
         messageQueue = new LinkedList<Message>();
     }
-
 
     @Override
     public void acceptMessage(Message message) {
@@ -16,7 +16,7 @@ public class Socket implements ISocket {
     }
 
     @Override
-    public Message getMessage() {
-        return messageQueue.poll();
+    public List<Message> getAllMessages() {
+        return messageQueue;
     }
 }
