@@ -1,5 +1,7 @@
 import com.sun.org.apache.xml.internal.security.algorithms.MessageDigestAlgorithm;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.util.*;
 
 public class Node implements INode, IObservable {
@@ -42,11 +44,17 @@ public class Node implements INode, IObservable {
         System.out.format("Node with id %s is processing\n", nodeId);
         //if the node has nothing to process, promptt for user input
         if (message == null) {
-            System.out.println(menuMessage);
-            Scanner userInputScanner = new Scanner(System.in);
-            int command = userInputScanner.nextInt();
-            processUserCommand(command);
-            userInputScanner.close();
+            try {
+                System.out.println(menuMessage);
+                BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+                String strCommand = br.readLine();
+                int command = Integer.parseInt(strCommand);
+                processUserCommand(command);
+                br.close();
+            }
+            catch (Exception ex) {
+
+            }
         }
         //else process the message appropriately
         else {
@@ -84,13 +92,19 @@ public class Node implements INode, IObservable {
 
     private void initiatePut() {
         System.out.println("Please enter data in format key:value");
-        Scanner userInputScanner = new Scanner(System.in);
-        String input = userInputScanner.next();
-        String[] splittedInput = input.split(":");
-        String key = splittedInput[0];
-        String value = splittedInput[1];
-        executePut(key, value);
-        System.out.println("Data processed");
+        try {
+            BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+            String input = br.readLine();
+            String[] splittedInput = input.split(":");
+            String key = splittedInput[0];
+            String value = splittedInput[1];
+            executePut(key, value);
+            System.out.println("Data processed");
+            br.close();
+        }
+        catch (Exception ex) {
+
+        }
     }
 
     private void executePut(String key, String value) {
@@ -101,11 +115,16 @@ public class Node implements INode, IObservable {
     }
 
     private void initiateGet() {
-        System.out.println("Please enter data key");
-        Scanner userInputScanner = new Scanner(System.in);
-        String key = userInputScanner.next();
-        String value = executeGet(key);
-        System.out.println("Results for key " + key + ": " + value);
+        try {
+            System.out.println("Please enter data key");
+            BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+            String key = br.readLine();
+            String value = executeGet(key);
+            System.out.println("Results for key " + key + ": " + value);
+        }
+        catch (Exception ex) {
+            
+        }
     }
 
     private String executeGet(String key) {
