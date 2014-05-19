@@ -1,3 +1,5 @@
+import com.sun.org.apache.xml.internal.security.algorithms.MessageDigestAlgorithm;
+
 import java.util.*;
 
 public class Node implements INode, IObservable {
@@ -48,6 +50,18 @@ public class Node implements INode, IObservable {
         }
         //else process the message appropriately
         else {
+            processMessage(message);
+        }
+    }
+
+    private void processMessage(Message message) {
+        MessageData data = message.getMessageData();
+        String key = data.getKey();
+        String value = data.getValue();
+        if (!value.equals("")) {
+            this.data.put(key,value);
+        }
+        else {
 
         }
     }
@@ -81,7 +95,9 @@ public class Node implements INode, IObservable {
 
     private void executePut(String key, String value) {
         String receiverId = getLightestNodeId();
-
+        MessageData data = new MessageData(key, value);
+        Message putMessage = new Message(getNodeId(), receiverId, data);
+        socket.acceptMessage(putMessage);
     }
 
     private void initiateGet() {

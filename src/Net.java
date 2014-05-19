@@ -34,6 +34,7 @@ public class Net implements INet, IObservable {
             Queue<Message> nodeQueue = new LinkedList<Message>();
             registeredNodes.put(id, node);
             ISocket nodeSocket = new Socket();
+            node.setSocket(nodeSocket);
             nodeSockets.put(id, nodeSocket);
             messagesToProcess.put(id, nodeQueue);
         }

@@ -1,14 +1,33 @@
 
 public class MessageData {
 
-    private String stringData;
+    private String key;
+    private String value;
 
-    public MessageData(String stringData) {
-        this.stringData = stringData;
+    public String getKey() {
+        return key;
     }
 
-    public String getStringData() {
-        return this.stringData;
+    public void setKey(String key) {
+        this.key = key;
+    }
+
+    public String getValue() {
+        return value;
+    }
+
+    public void setValue(String value) {
+        this.value = value;
+    }
+
+    public MessageData(String key, String value) {
+        this.key = key;
+        this.value = value;
+    }
+
+    public MessageData(String key) {
+        this.key = key;
+        this.value = "";
     }
 
 }
