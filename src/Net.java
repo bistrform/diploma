@@ -45,24 +45,28 @@ public class Net implements INet, IObservable {
 
     @Override
     public void run() {
-        for (int tick = 0; tick < 10; tick++) {
-            tickNumber = tick;
-            int currentNodeIndex = tick % registeredNodes.size();
-            INode currentNode = getNodeByIndex(currentNodeIndex);
-            System.out.format("Tick %d. Giving control to node with id %s \n", tick, currentNode.getNodeId());
-
-            //first let the node process the next available message
-            Queue<Message> currentNodeQueue = messagesToProcess.get(currentNode.getNodeId());
-            if (currentNodeQueue != null) {
-                Message nextMessageForNode = currentNodeQueue.poll();
-                //the node is responsible for checking for null message
-                currentNode.process(nextMessageForNode);
+        int tick = 0;
+        while (tick < 10) {
+            for (INode currentNode: registeredNodes.values()) {
+                System.out.format("Tick %d. Giving control to node with id %s \n", tick, currentNode.getNodeId());
+                runStep(currentNode);
+                tick++;
             }
-
-            //then get all of its formed messages from it's socket
-            ISocket currentNodeSocket = nodeSockets.get(currentNode.getNodeId());
-            distributeResponseMessages(currentNodeSocket.getAllMessages());
         }
+    }
+
+    private void runStep(INode node) {
+        //first let the node process the next available message
+        Queue<Message> currentNodeQueue = messagesToProcess.get(node.getNodeId());
+        if (currentNodeQueue != null) {
+            Message nextMessageForNode = currentNodeQueue.poll();
+            //the node is responsible for checking for null message
+            node.process(nextMessageForNode);
+        }
+
+        //then get all of its formed messages from it's socket
+        ISocket currentNodeSocket = nodeSockets.get(node.getNodeId());
+        distributeResponseMessages(currentNodeSocket.getAllMessages());
     }
 
     private void distributeResponseMessages(List<Message> responseMessages) {

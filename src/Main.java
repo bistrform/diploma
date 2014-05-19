@@ -1,6 +1,3 @@
-import javax.naming.ldap.Control;
-import java.util.*;
-
 public class Main {
 
     public static void main(String[] args) {
@@ -10,6 +7,9 @@ public class Main {
         net.createNode();
         net.createNode();
         net.createNode();
+        for (INode node: net.getRegisteredNodes().values()) {
+            node.registerOtherNodes(net.getRegisteredNodes().keySet());
+        }
         net.run();
     }
 
