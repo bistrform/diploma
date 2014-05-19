@@ -11,6 +11,7 @@ public class Node implements INode, IObservable {
     //this map holds other nodes' ids and the occupied space in it
     private Map<String, Integer> otherNodes;
     private Map<String, String> data;
+    private BufferedReader br;
 
     public String getNodeId() {
         return nodeId;
@@ -21,6 +22,7 @@ public class Node implements INode, IObservable {
         socket = new Socket();
         otherNodes = new LinkedHashMap<String, Integer>();
         data = new HashMap<String, String>();
+        br = new BufferedReader(new InputStreamReader(System.in));
     }
 
     @Override
@@ -46,11 +48,11 @@ public class Node implements INode, IObservable {
         if (message == null) {
             try {
                 System.out.println(menuMessage);
-                BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-                String strCommand = br.readLine();
-                int command = Integer.parseInt(strCommand);
+                Scanner userInputScanner = new Scanner(System.in);
+                String reply = userInputScanner.nextLine();
+                //String strCommand = br.readLine();
+                int command = Integer.parseInt(reply);
                 processUserCommand(command);
-                br.close();
             }
             catch (Exception ex) {
 
@@ -93,14 +95,13 @@ public class Node implements INode, IObservable {
     private void initiatePut() {
         System.out.println("Please enter data in format key:value");
         try {
-            BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-            String input = br.readLine();
+            Scanner userInputScanner = new Scanner(System.in);
+            String input = userInputScanner.nextLine();
             String[] splittedInput = input.split(":");
             String key = splittedInput[0];
             String value = splittedInput[1];
             executePut(key, value);
             System.out.println("Data processed");
-            br.close();
         }
         catch (Exception ex) {
 
@@ -117,13 +118,13 @@ public class Node implements INode, IObservable {
     private void initiateGet() {
         try {
             System.out.println("Please enter data key");
-            BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-            String key = br.readLine();
+            Scanner userInputScanner = new Scanner(System.in);
+            String key = userInputScanner.nextLine();
             String value = executeGet(key);
             System.out.println("Results for key " + key + ": " + value);
         }
         catch (Exception ex) {
-            
+
         }
     }
 
