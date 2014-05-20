@@ -63,13 +63,26 @@ public class Node implements INode, IObservable {
 
     private void processMessage(Message message) {
         MessageData data = message.getMessageData();
-        String key = data.getKey();
-        String value = data.getValue();
-        if (!value.equals("")) {
-            this.data.put(key,value);
+        String messageKey = data.getKey();
+        String messageValue = data.getValue();
+        //if the message is a "get" request
+        if (messageValue.equals("")) {
+            String value = this.data.get((messageKey));
+            if (value != null) {
+                MessageData valueMessageData = new MessageData(messageKey, value);
+                Message valueMessage = new Message(getNodeId(), message.getSender(), valueMessageData, getActualSize());
+                valueMessage.setIsAnswer();
+                socket.acceptMessage(valueMessage);
+            }
         }
+        //if the message is either a "put" request or a "get" answer
         else {
-
+            if (message.isAnswer()) {
+                System.out.format("The value for the key \"%s\" is \"%s\"\n", messageKey, messageValue);
+            }
+            else {
+                this.data.put(messageKey, messageValue);
+            }
         }
         updateSenderSize(message);
     }
@@ -130,18 +143,20 @@ public class Node implements INode, IObservable {
             System.out.println("Please enter data key");
             Scanner userInputScanner = new Scanner(System.in);
             String key = userInputScanner.nextLine();
-            String value = executeGet(key);
-            System.out.println("Results for key " + key + ": " + value);
+            executeGet(key);
+            System.out.println("Get command executed");
         }
         catch (Exception ex) {
 
         }
     }
 
-    private String executeGet(String key) {
-        String value = "No value found";
-
-        return value;
+    //this only sends the request to other nodes. the value is returned when the answer arrives
+    private void executeGet(String key) {
+        List<String> receivers = new ArrayList<String>(otherNodes.keySet());
+        MessageData data = new MessageData(key);
+        Message getMessage = new Message(getNodeId(), receivers, data, getActualSize());
+        socket.acceptMessage(getMessage);
     }
 
     private String getLightestNodeId() {

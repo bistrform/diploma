@@ -8,12 +8,14 @@ public class Message {
     private final String sender;
     private final List<String> receivers;
     private final int actualSenderSize;
+    private boolean isAnswer;
 
     public Message(String sender, List<String> receivers, MessageData messageData, int actualSenderSize) {
         this.sender = sender;
         this.receivers = receivers;
         this.messageData = messageData;
         this.actualSenderSize = actualSenderSize;
+        this.isAnswer = false;
     }
 
     public Message(String sender, String receiver, MessageData messageData, int actualSenderSize) {
@@ -21,6 +23,7 @@ public class Message {
         this.receivers = new ArrayList<String>(Arrays.asList(receiver));
         this.messageData = messageData;
         this.actualSenderSize = actualSenderSize;
+        this.isAnswer = false;
     }
 
     public String getSender() {
@@ -39,4 +42,11 @@ public class Message {
         return this.actualSenderSize;
     }
 
+    public void setIsAnswer() {
+        this.isAnswer = true;
+    }
+
+    public boolean isAnswer() {
+        return this.isAnswer;
+    }
 }
