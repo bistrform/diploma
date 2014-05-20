@@ -17,6 +17,8 @@ public class Socket implements ISocket {
 
     @Override
     public List<Message> getAllMessages() {
-        return messageQueue;
+        List<Message> result = new LinkedList<Message>(messageQueue);
+        messageQueue.clear();
+        return result;
     }
 }
