@@ -11,7 +11,6 @@ public class Node implements INode, IObservable {
     //this map holds other nodes' ids and the occupied space in it
     private Map<String, Integer> otherNodes;
     private Map<String, String> data;
-    private BufferedReader br;
 
     public String getNodeId() {
         return nodeId;
@@ -22,7 +21,6 @@ public class Node implements INode, IObservable {
         socket = new Socket();
         otherNodes = new LinkedHashMap<String, Integer>();
         data = new HashMap<String, String>();
-        br = new BufferedReader(new InputStreamReader(System.in));
     }
 
     @Override
@@ -50,7 +48,6 @@ public class Node implements INode, IObservable {
                 System.out.println(menuMessage);
                 Scanner userInputScanner = new Scanner(System.in);
                 String reply = userInputScanner.nextLine();
-                //String strCommand = br.readLine();
                 int command = Integer.parseInt(reply);
                 processUserCommand(command);
             }
@@ -74,6 +71,13 @@ public class Node implements INode, IObservable {
         else {
 
         }
+        updateSenderSize(message);
+    }
+
+    private void updateSenderSize(Message message) {
+        String senderId = message.getSender();
+        int actualSenderSize = message.getActualSenderSize();
+        otherNodes.put(senderId, actualSenderSize);
     }
 
     private void processUserCommand(int command) {
@@ -87,6 +91,12 @@ public class Node implements INode, IObservable {
                 break;
 
             case 3:
+                break;
+
+            case 4:
+                System.out.println(getStatus());
+                break;
+
             default:
                 break;
         }
@@ -111,7 +121,7 @@ public class Node implements INode, IObservable {
     private void executePut(String key, String value) {
         String receiverId = getLightestNodeId();
         MessageData data = new MessageData(key, value);
-        Message putMessage = new Message(getNodeId(), receiverId, data);
+        Message putMessage = new Message(getNodeId(), receiverId, data, getActualSize());
         socket.acceptMessage(putMessage);
     }
 
@@ -156,6 +166,10 @@ public class Node implements INode, IObservable {
         nodeStatus.append(data.toString());
         nodeStatus.append(System.getProperty("line.separator"));
         return nodeStatus.toString();
+    }
+
+    private int getActualSize() {
+        return this.data.size();
     }
 
 }
