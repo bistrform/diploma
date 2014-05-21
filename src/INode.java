@@ -10,6 +10,10 @@ public interface INode {
 
     public void setSocket(ISocket socket);
 
+    public void executePut(String key, String value);
+
+    public void executeGet(String key);
+
     public void process(Message message);
 
 }

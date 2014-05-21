@@ -40,25 +40,8 @@ public class Node implements INode, IObservable {
 
     @Override
     public void process(Message message) {
-        String menuMessage = "Please select next option\n1 - insert data\n2 - get data\n3 - continue";
-        System.out.format("Node with id %s is processing\n", nodeId);
-        //if the node has nothing to process, promptt for user input
-        if (message == null) {
-            try {
-                System.out.println(menuMessage);
-                Scanner userInputScanner = new Scanner(System.in);
-                String reply = userInputScanner.nextLine();
-                int command = Integer.parseInt(reply);
-                processUserCommand(command);
-            }
-            catch (Exception ex) {
-
-            }
-        }
-        //else process the message appropriately
-        else {
+        if (message != null)
             processMessage(message);
-        }
     }
 
     private void processMessage(Message message) {
@@ -67,7 +50,7 @@ public class Node implements INode, IObservable {
         String messageValue = data.getValue();
         //if the message is a "get" request
         if (messageValue.equals("")) {
-            String value = this.data.get((messageKey));
+            String value = this.data.get(messageKey);
             if (value != null) {
                 MessageData valueMessageData = new MessageData(messageKey, value);
                 Message valueMessage = new Message(getNodeId(), message.getSender(), valueMessageData, getActualSize());
@@ -81,6 +64,7 @@ public class Node implements INode, IObservable {
                 System.out.format("The value for the key \"%s\" is \"%s\"\n", messageKey, messageValue);
             }
             else {
+                System.out.println("Data inserted to node " + nodeId);
                 this.data.put(messageKey, messageValue);
             }
         }
@@ -93,66 +77,17 @@ public class Node implements INode, IObservable {
         otherNodes.put(senderId, actualSenderSize);
     }
 
-    private void processUserCommand(int command) {
-        switch (command) {
-            case 1:
-                initiatePut();
-                break;
-
-            case 2:
-                initiateGet();
-                break;
-
-            case 3:
-                break;
-
-            case 4:
-                System.out.println(getStatus());
-                break;
-
-            default:
-                break;
-        }
-    }
-
-    private void initiatePut() {
-        System.out.println("Please enter data in format key:value");
-        try {
-            Scanner userInputScanner = new Scanner(System.in);
-            String input = userInputScanner.nextLine();
-            String[] splittedInput = input.split(":");
-            String key = splittedInput[0];
-            String value = splittedInput[1];
-            executePut(key, value);
-            System.out.println("Data processed");
-        }
-        catch (Exception ex) {
-
-        }
-    }
-
-    private void executePut(String key, String value) {
+    @Override
+    public void executePut(String key, String value) {
         String receiverId = getLightestNodeId();
         MessageData data = new MessageData(key, value);
         Message putMessage = new Message(getNodeId(), receiverId, data, getActualSize());
         socket.acceptMessage(putMessage);
     }
 
-    private void initiateGet() {
-        try {
-            System.out.println("Please enter data key");
-            Scanner userInputScanner = new Scanner(System.in);
-            String key = userInputScanner.nextLine();
-            executeGet(key);
-            System.out.println("Get command executed");
-        }
-        catch (Exception ex) {
-
-        }
-    }
-
     //this only sends the request to other nodes. the value is returned when the answer arrives
-    private void executeGet(String key) {
+    @Override
+    public void executeGet(String key) {
         List<String> receivers = new ArrayList<String>(otherNodes.keySet());
         MessageData data = new MessageData(key);
         Message getMessage = new Message(getNodeId(), receivers, data, getActualSize());

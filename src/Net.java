@@ -28,6 +28,14 @@ public class Net implements INet, IObservable {
         registerNode(id, node);
     }
 
+    public void createClientNode() {
+        //ugly node attachment, rethink
+        INode dataNode = (INode)registeredNodes.values().toArray()[0];
+        String id = UUID.randomUUID().toString();
+        INode node = new ClientNode(id, dataNode);
+        registerNode(id, node);
+    }
+
     @Override
     public void registerNode(String id, INode node) {
         if (!registeredNodes.containsKey(id)) {
@@ -47,7 +55,7 @@ public class Net implements INet, IObservable {
     @Override
     public void run() {
         int tick = 0;
-        while (tick < 10) {
+        while (tick < 20) {
             for (INode currentNode: registeredNodes.values()) {
                 System.out.format("Tick %d. Giving control to node with id %s \n", tick, currentNode.getNodeId());
                 runStep(currentNode);
